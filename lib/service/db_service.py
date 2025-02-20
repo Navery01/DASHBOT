@@ -12,12 +12,9 @@ class DBService:
         conn = mysql.connect(**CONFIG['MYSQL'])
         cursor = conn.cursor(buffered=True)
         try:
-            if self.get_user(guild_id, user_id):
-                print('[SQL] User already exists')
-                return
-            else:
-                cursor.execute("INSERT INTO DiscordUser (UserID, GuildID, UserName, DateJoined) VALUES (%s, %s, %s);", (user_id, guild_id, user_name, datetime.now()))
-                print('[SQL] User added')
+            print(f'[SQL] Inserting user {user_name}')
+            cursor.execute("INSERT INTO DiscordUser (UserID, GuildID, UserName, DateJoined) VALUES (%s, %s, %s, %s);", (user_id, guild_id, user_name, datetime.now()))
+            print('[SQL] User added')
         except mysql.Error as err:
             if err.errno == errorcode.ER_NO_SUCH_TABLE:
                 print(f"Error: Table 'users' does not exist.")
@@ -32,7 +29,7 @@ class DBService:
         conn = mysql.connect(**CONFIG['MYSQL'])
         cursor = conn.cursor(buffered=True)
         try:
-            cursor.execute("INSERT INTO DiscordGuilds (GuildID, GuildName) VALUES (%s, %s);", (guild_id, guild_name))
+            cursor.execute("INSERT INTO DiscordGuild (GuildID, GuildName) VALUES (%s, %s);", (guild_id, guild_name))
             print('[SQL] Guild added')
         except mysql.Error as err:
             if err.errno == errorcode.ER_NO_SUCH_TABLE:
