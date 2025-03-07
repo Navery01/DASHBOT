@@ -1,2 +1,5 @@
 /configs.yml
 /venv
+*.pyc
+*.pyo
+*.out

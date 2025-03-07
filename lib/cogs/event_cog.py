@@ -51,6 +51,15 @@ class EventCog(commands.Cog):
     
     @commands.Cog.listener()
     async def on_presence_update(self, before, after):
-        if before.status != after.status:
-            print(f'Presence update for {before.user} from {before.status} to {after.status}')
-            # DBService().insert_presence_update(before.guild.id, before.user.id, before.status, after.status)
+        # print(dir(before))
+        # print(f'Desktop Status: {before.desktop_status} | {after.desktop_status}')
+        # print(f'Activity {before.activity} | {after.activity}')
+
+        if before.desktop_status != after.desktop_status:
+            DBService().insert_presence_event(f'DESKTOP_STATUS','END' ,str(before.desktop_status), before.id)
+            DBService().insert_presence_event(f'DESKTOP_STATUS', 'START', str(after.desktop_status), before.id)
+
+        if before.activity != after.activity:
+            DBService().insert_presence_event(f'ACTIVITY_STATUS', 'END', str(before.activity), before.id)
+            DBService().insert_presence_event(f'ACTIVITY_STATUS', 'START', str(after.activity), before.id)
+        
