@@ -5,6 +5,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS ReLoad_IncompleteEvents;
 CREATE PROCEDURE ReLoad_IncompleteEvents () 
 BEGIN
+<<<<<<< Updated upstream
 
 	INSERT INTO DashSRC.DiscordActivityEvent
 		(EventID,
@@ -27,6 +28,8 @@ BEGIN
 		UpdateTime
 	FROM DashSRC.DiscordEventHolding
     WHERE SourceTable LIKE 'Activity';
+=======
+>>>>>>> Stashed changes
     
 	INSERT INTO DashSRC.DiscordVoiceChannelEvent
 		(EventID,

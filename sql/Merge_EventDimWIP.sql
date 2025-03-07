@@ -15,10 +15,18 @@ BEGIN
 			, EventID
             , EventType
             , CASE 				WHEN EventType IN ('JOIN', 'LEAVE') THEN 'VOICE_MOVE'
+<<<<<<< Updated upstream
 										WHEN EventType LIKE 'CHANNEL_MOVE' THEN CAST(NULL AS VARCHAR(64))
 										WHEN EventType IN ('UNMUTE', 'MUTE') THEN 'VOICE_MUTE'
 										WHEN EventType IN ('UNDEAF', 'DEAF') THEN 'VOICE_DEAF'
 										WHEN EventType IN ('STREAM', 'UNSTREAM')  THEN 'STREAM'
+=======
+								WHEN EventType LIKE 'CHANNEL_MOVE' THEN CAST(NULL AS VARCHAR(64))
+								WHEN EventType IN ('UNMUTE', 'MUTE') THEN 'VOICE_MUTE'
+								WHEN EventType IN ('UNDEAF', 'DEAF') THEN 'VOICE_DEAF'
+								WHEN EventType IN ('STREAM', 'UNSTREAM')  THEN 'STREAM'
+                                
+>>>>>>> Stashed changes
 						END AS EventCategory
 			, CAST(NULL AS VARCHAR(63) ) AS EventDescr
             , CAST(NULL AS VARCHAR(63) ) AS EventText
@@ -27,6 +35,7 @@ BEGIN
             , EventTimestamp
             , UpdateTime
             , MD5(CONCAT(COALESCE(EventID, '$$'), COALESCE(EventType, '$$'), '$$', '$$', COALESCE(FromChannelName, '$$'), COALESCE(ToChannelName, '$$'))) AS HashByte 
+<<<<<<< Updated upstream
             FROM DashSRC.DiscordVoiceChannelEvent
             UNION
 			SELECT DISTINCT 
@@ -44,6 +53,9 @@ BEGIN
             , MD5(CONCAT(COALESCE(EventID, '$$'), COALESCE(EventType, '$$'), COALESCE(EventDescr, '$$'), COALESCE(EventText, '$$'), '$$', '$$')) AS HashByte 
             FROM DashSRC.DiscordActivityEvent
             );
+=======
+            FROM DashSRC.DiscordVoiceChannelEvent);
+>>>>>>> Stashed changes
     
 		INSERT INTO DarwinCore.EventDim
 			(EventID,
