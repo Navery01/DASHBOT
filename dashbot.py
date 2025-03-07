@@ -18,9 +18,6 @@ async def on_ready():
 async def main():
     async with bot:
         await bot.add_cog(EventCog(bot))
-        # await bot.add_cog(event_cog(bot))
-        # await bot.add_cog(token_cog(bot))
-        # await bot.add_cog(trivia_cog(bot))
         await bot.start(TOKEN)
 
 if __name__ == '__main__':

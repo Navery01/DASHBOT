@@ -29,11 +29,11 @@ class EventCog(commands.Cog):
         after_state = {'mute': after.self_mute, 'deaf': after.self_deaf, 'stream':after.self_stream}
         
         if before.channel is None:
-            DBService().insert_voice_channel_event('JOIN', None, after.channel.name, member.id, member.guild.id)
+            DBService().insert_voice_channel_event('VOICE_JOIN', None, after.channel.name, member.id, member.guild.id)
         elif after.channel is None:
-            DBService().insert_voice_channel_event('LEAVE', before.channel.name, None, member.id, member.guild.id)
+            DBService().insert_voice_channel_event('VOICE_LEAVE', before.channel.name, None, member.id, member.guild.id)
         elif before.channel.name != after.channel.name:
-            DBService().insert_voice_channel_event('MOVE', before.channel.name, after.channel.name, member.id, member.guild.id)
+            DBService().insert_voice_channel_event('CHANNEL_MOVE', before.channel.name, after.channel.name, member.id, member.guild.id)
         elif before_state['mute'] == True and after_state['mute'] == False:
             DBService().insert_voice_channel_event('UNMUTE', before.channel.name, after.channel.name, member.id, member.guild.id)
         elif before_state['deaf'] == True and after_state['deaf'] == False:
@@ -48,3 +48,18 @@ class EventCog(commands.Cog):
             DBService().insert_voice_channel_event('DEAF', before.channel.name, after.channel.name, member.id, member.guild.id)
         else:
             print('Unknown voice state change')
+    
+    @commands.Cog.listener()
+    async def on_presence_update(self, before, after):
+        # print(dir(before))
+        # print(f'Desktop Status: {before.desktop_status} | {after.desktop_status}')
+        # print(f'Activity {before.activity} | {after.activity}')
+
+        if before.desktop_status != after.desktop_status:
+            DBService().insert_presence_event(f'DESKTOP_STATUS','END' ,str(before.desktop_status), before.id)
+            DBService().insert_presence_event(f'DESKTOP_STATUS', 'START', str(after.desktop_status), before.id)
+
+        if before.activity != after.activity:
+            DBService().insert_presence_event(f'ACTIVITY_STATUS', 'END', str(before.activity), before.id)
+            DBService().insert_presence_event(f'ACTIVITY_STATUS', 'START', str(after.activity), before.id)
+        
