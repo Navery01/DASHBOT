@@ -34,6 +34,7 @@ BEGIN
 	LEFT JOIN DiscordGuild dg
 		ON dvce.GuildID = du.GuildID);
 
+<<<<<<< Updated upstream
 	DROP TABLE IF EXISTS CompletedActivityEvents;
 	CREATE TEMPORARY TABLE CompletedActivityEvents
 	AS (
@@ -57,14 +58,20 @@ BEGIN
 	LEFT JOIN DiscordGuild dg
 		ON dvce.GuildID = du.GuildID);
 
+=======
+>>>>>>> Stashed changes
 
 
 	DROP TABLE IF EXISTS AllEvents;
 	CREATE TEMPORARY TABLE AllEvents AS (
 	WITH CompletedEventCTE AS(
+<<<<<<< Updated upstream
 	SELECT * FROM CompletedVoiceEvents
 	UNION 
 	SELECT * FROM CompletedActivityEvents)
+=======
+	SELECT * FROM CompletedVoiceEvents)
+>>>>>>> Stashed changes
 	SELECT 
 		 EventID
 		, EventType
@@ -78,8 +85,13 @@ BEGIN
         , InsertDate
         , Updatetime
         , EventSource
+<<<<<<< Updated upstream
         , LEAD(EventType) OVER (PARTITION BY UserID, EventCategory ORDER BY EventTimeStamp ASC) AS EventEndType
 		, LEAD(EventTimestamp) OVER (PARTITION BY UserID, EventCategory ORDER BY EventTimeStamp ASC) AS EventEndTime
+=======
+        , LEAD(EventType) OVER (PARTITION BY UserID, GuildID, EventCategory ORDER BY EventTimeStamp ASC) AS EventEndType
+		, LEAD(EventTimestamp) OVER (PARTITION BY UserID, GuildID, EventCategory ORDER BY EventTimeStamp ASC) AS EventEndTime
+>>>>>>> Stashed changes
 	FROM CompletedEventCTE ve
 	);
  
@@ -111,7 +123,11 @@ SELECT
 	, Updatetime
     FROM AllEvents 
 WHERE EventType IN ('JOIN', 'MUTE', 'DEAF', 'STREAM')
+<<<<<<< Updated upstream
 		AND EventEndTime IS NULL;
+=======
+	AND EventEndTime IS NULL;
+>>>>>>> Stashed changes
         
         
 DELETE FROM DiscordVoiceChannelEvent
@@ -119,6 +135,7 @@ WHERE CONCAT(EventID, UpdateTime) IN
 (SELECT CONCAT(EventID, UpdateTime)
 FROM AllEvents
 WHERE EventSource = 'Voice'
+<<<<<<< Updated upstream
 AND EventType IN ('JOIN', 'MUTE', 'DEAF', 'STREAM')
 	AND EventEndTime IS NULL);
     
@@ -130,6 +147,12 @@ WHERE EventSource = 'Activity'
 AND EventType IN ('JOIN', 'MUTE', 'DEAF', 'STREAM')
 	AND EventEndTime IS NULL);
     
+=======
+	AND (EventType IN ('JOIN', 'MUTE', 'DEAF', 'STREAM')
+	OR SUBSTRING(EventType, 1, 20) LIKE 'DESKTOP_STATUS_BEGIN'
+    OR SUBSTRING(EventType, 1, 21) LIKE 'ACTIVITY_STATUS_BEGIN')
+	AND EventEndTime IS NULL);
+>>>>>>> Stashed changes
 END$$
 
 

@@ -46,11 +46,18 @@ CREATE TABLE DiscordVoiceChannelEvent (
 DROP TABLE IF EXISTS DiscordActivityEvent;
 CREATE TABLE DiscordActivityEvent (
 	  EventID BIGINT PRIMARY KEY AUTO_INCREMENT
+<<<<<<< Updated upstream
 	, EventType VARCHAR(32)
     , EventDescr VARCHAR(63)
     , EventText VARCHAR(255)
     , UserID VARCHAR(64)
     , GuildID BIGINT
+=======
+	, EventType VARCHAR(63)
+    , EventDescr VARCHAR(63)
+    , EventText VARCHAR(63)
+    , UserID VARCHAR(64)
+>>>>>>> Stashed changes
     , EventTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP()
 	, InsertDate DATETIME DEFAULT CURRENT_TIMESTAMP()
 	, UpdateTime DATETIME DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()
@@ -59,7 +66,11 @@ CREATE TABLE DiscordActivityEvent (
 DROP TABLE IF EXISTS DiscordEventHolding;
 CREATE TABLE DiscordEventHolding(
 	  EventID BIGINT 
+<<<<<<< Updated upstream
 	, EventType VARCHAR(32)
+=======
+	, EventType VARCHAR(255)
+>>>>>>> Stashed changes
 	, FromChannelName VARCHAR(64)
     , ToChannelName VARCHAR(64)
     , EventDescr VARCHAR(64)
@@ -72,5 +83,19 @@ CREATE TABLE DiscordEventHolding(
 	, UpdateTime DATETIME DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()
 );
 
+<<<<<<< Updated upstream
+=======
+DROP TABLE IF EXISTS DiscordActivityHolding;
+CREATE TABLE DiscordActivityHolding(
+	  EventID BIGINT PRIMARY KEY AUTO_INCREMENT
+	, EventType VARCHAR(63)
+    , EventDescr VARCHAR(63)
+    , EventText VARCHAR(63)
+    , UserID VARCHAR(64)
+    , EventTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP()
+	, InsertDate DATETIME DEFAULT CURRENT_TIMESTAMP()
+	, UpdateTime DATETIME DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()
+);
+>>>>>>> Stashed changes
 
 

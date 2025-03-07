@@ -14,6 +14,7 @@ BEGIN
 			, GuildID
             , UpdateTime
             FROM DashSRC.DiscordVoiceChannelEvent
+<<<<<<< Updated upstream
             UNION
 			SELECT DISTINCT 
 			  EventID
@@ -21,20 +22,30 @@ BEGIN
 			, GuildID
             , UpdateTime
             FROM DashSRC.DiscordActivityEvent
+=======
+>>>>>>> Stashed changes
             );
            
            DROP TABLE IF EXISTS ActivityFact_FactStage;
            CREATE TEMPORARY TABLE ActivityFact_FactStage AS(
 			SELECT
 				  ed.EventDimKey AS EventStartDimKey
+<<<<<<< Updated upstream
                 , LEAD(ed.EventDimKey) OVER (PARTITION BY afs.UserID, ed.EventCategory ORDER BY ed.EventTimeStamp ASC) AS EventEndDimKey
+=======
+                , LEAD(ed.EventDimKey) OVER (PARTITION BY afs.UserID, afs.GuildID, ed.EventCategory ORDER BY ed.EventTimeStamp ASC) AS EventEndDimKey
+>>>>>>> Stashed changes
                 , ud.UserDimKey
                 , gd.GuildDimKey
 				, afs.EventID
                 , afs.UserID
                 , afs.GuildID
                 , ed.EventTimeStamp AS EventStartTime
+<<<<<<< Updated upstream
                 , LEAD(ed.EventTimeStamp) OVER (PARTITION BY afs.UserID, ed.EventCategory ORDER BY ed.EventTimeStamp ASC) AS EventEndTime
+=======
+                , LEAD(ed.EventTimeStamp) OVER (PARTITION BY afs.UserID, afs.GuildID, ed.EventCategory ORDER BY ed.EventTimeStamp ASC) AS EventEndTime
+>>>>>>> Stashed changes
                 , afs.UpdateTime
 			FROM ActivityFact_Staging afs
             JOIN EventDim ed
@@ -76,11 +87,15 @@ BEGIN
                 AND ed.EventType IN ('JOIN', 'STREAM', 'MUTE', 'DEAF')
 			JOIN EventDim ed2 
 				ON afs.EventEndDimKey = ed2.EventDimKey
+<<<<<<< Updated upstream
  				AND ed2.EventType IN ('LEAVE', 'UNSTREAM', 'UNMUTE', 'UNDEAF'); 
             
             
 
             
+=======
+ 				AND ed2.EventType IN ('LEAVE', 'UNSTREAM', 'UNMUTE', 'UNDEAF');
+>>>>>>> Stashed changes
 
 END$$
 
