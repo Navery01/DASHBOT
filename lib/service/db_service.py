@@ -71,6 +71,20 @@ class DBService:
         conn.commit()
         conn.close()
     
+    def insert_presence_event(self, event_type, from_channel, to_channel, user_id, guild_id):
+        conn = mysql.connect(**CONFIG['MYSQL'])
+        cursor = conn.cursor(buffered=True)
+        try:
+            cursor.execute("INSERT INTO DiscordActivityEvent (EventType, EventDescr, EventText, UserID, GuildID, EventTimestamp) VALUES (%s, %s, %s, %s, %s, %s);", (event_type, from_channel, to_channel, user_id, guild_id, datetime.now()))
+            print('[SQL] Presence event added')
+        except mysql.Error as err:
+            if err.errno == errorcode.ER_NO_SUCH_TABLE:
+                print(f"Error: Table 'channel_events' does not exist.")
+            else:
+                print(err.msg)
+        cursor.close()
+        conn.commit()
+        conn.close()
 
 
 if __name__ == '__main__':
