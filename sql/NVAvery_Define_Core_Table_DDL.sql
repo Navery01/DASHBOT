@@ -30,11 +30,7 @@ DROP TABLE IF EXISTS EventDim;
 CREATE TABLE EventDim (
 	EventDimKey BIGINT PRIMARY KEY AUTO_INCREMENT,
     EventID BIGINT,
-<<<<<<< Updated upstream
-    EventType VARCHAR(32),
-=======
     EventType VARCHAR(255),
->>>>>>> Stashed changes
     EventCategory VARCHAR(32),
     EventDescription VARCHAR(64),
     EventText VARCHAR(64),
@@ -48,8 +44,6 @@ CREATE TABLE EventDim (
     IsCurrent BOOLEAN DEFAULT TRUE,
     HashByte CHAR(32)
 );
-<<<<<<< Updated upstream
-=======
 
 DROP TABLE IF EXISTS UserActivityDim;
 CREATE TABLE UserActivityDim (
@@ -57,7 +51,7 @@ CREATE TABLE UserActivityDim (
     ActivityID BIGINT,
     EventType VARCHAR(255),
     EventCategory VARCHAR(32),
-    EventText VARCHAR(64),
+    EventText VARCHAR(255),
     EventTimeStamp DATETIME,
     RetentionPeriod SMALLINT,
     UpdateTime DATETIME,
@@ -67,7 +61,6 @@ CREATE TABLE UserActivityDim (
     HashByte CHAR(32)
 );
 
->>>>>>> Stashed changes
 DROP TABLE IF EXISTS ChatEventDim;
 CREATE TABLE ChatEventDim (
 	MessageDimKey BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -102,9 +95,6 @@ CREATE TABLE ActivityFact (
     FOREIGN KEY (EventEndDimKey) REFERENCES EventDim(EventDimKey),
     FOREIGN KEY (UserDimKey) REFERENCES UserDim(UserDimKey),
     FOREIGN KEY (GuildDimKey) REFERENCES GuildDim(GuildDimKey)
-<<<<<<< Updated upstream
-    
-=======
 );
 
 DROP TABLE IF EXISTS UserActivityFact;
@@ -124,7 +114,6 @@ CREATE TABLE UserActivityFact (
     FOREIGN KEY (ActivityStartDimKey) REFERENCES UserActivityDim(ActivityDimKey),
     FOREIGN KEY (ActivityEndDimKey) REFERENCES UserActivityDim(ActivityDimKey),
     FOREIGN KEY (UserDimKey) REFERENCES UserDim(UserDimKey)
->>>>>>> Stashed changes
 );
 DROP TABLE IF EXISTS ChatActivityFact;
 CREATE TABLE ChatActivityFact (
