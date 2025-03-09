@@ -51,15 +51,16 @@ class EventCog(commands.Cog):
     
     @commands.Cog.listener()
     async def on_presence_update(self, before, after):
-        # print(dir(before))
-        # print(f'Desktop Status: {before.desktop_status} | {after.desktop_status}')
-        # print(f'Activity {before.activity} | {after.activity}')
-
         if before.desktop_status != after.desktop_status:
             DBService().insert_presence_event(f'DESKTOP_STATUS','END' ,str(before.desktop_status), before.id)
             DBService().insert_presence_event(f'DESKTOP_STATUS', 'START', str(after.desktop_status), before.id)
 
         if before.activity != after.activity:
-            DBService().insert_presence_event(f'ACTIVITY_STATUS', 'END', str(before.activity), before.id)
-            DBService().insert_presence_event(f'ACTIVITY_STATUS', 'START', str(after.activity), before.id)
+            if before.activity is None and after.activity is not None:
+                DBService().insert_presence_event(str(after.activity.type), 'START', str(after.activity.name), after.id)
+            elif before.activity is not None and after.activity is None:
+                DBService().insert_presence_event(str(before.activity.type), 'END', str(before.activity.name), before.id)
+            else:
+                DBService().insert_presence_event(str(before.activity.type), 'END', str(before.activity.name), before.id)
+                DBService().insert_presence_event(str(after.activity.type), 'START', str(after.activity.name), before.id)
         
